@@ -1511,7 +1511,7 @@ progress {
 
   .col-md-6 {
     flex: 0 0 auto;
-    width: 50%;
+    width: 100%;
   }
 
   .col-md-7 {
@@ -1805,7 +1805,7 @@ progress {
 
   .col-lg-8 {
     flex: 0 0 auto;
-    width: 66.66666667%;
+    width: 100%;
   }
 
   .col-lg-9 {
@@ -11910,7 +11910,9 @@ fieldset:disabled .btn {
 .max-height-vh-100 {
   max-height: 100vh !important;
 }
-
+.max-width-vh-100per {
+  max-width: max-content !important;
+}
 .min-height-100 {
   min-height: 100px !important;
 }
@@ -29047,15 +29049,7 @@ pre[class*=language-] {
  * Scrollbar rail styles
  */
 .ps__rail-x {
-  display: none;
-  opacity: 0;
-  transition: background-color 0.2s linear, opacity 0.2s linear;
-  -webkit-transition: background-color 0.2s linear, opacity 0.2s linear;
-  height: 15px;
-  /* there must be 'bottom' or 'top' for ps__rail-x */
-  bottom: 0px;
-  /* please don't change 'position' */
-  position: absolute;
+
 }
 
 .ps__rail-y {
