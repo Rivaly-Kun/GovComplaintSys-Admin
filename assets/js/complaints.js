@@ -174,7 +174,7 @@ async function showCommentModal(complaintId) {
   watchComments(complaintId);
   modal.show();
 }
-
+      
 // Event listeners
 document.addEventListener("click", async (e) => {
   if (e.target.matches(".view-comments-btn")) {
