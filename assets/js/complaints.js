@@ -51,9 +51,13 @@ onValue(complaintsRef, (snapshot) => {
           <td class="align-middle text-center text-sm">
             <span class="text-xs font-weight-bold">${date}</span>
           </td>
-          <td class="align-middle">
-            <button class="btn btn-sm btn-outline-info view-comments-btn" data-id="${uid}">View Comments</button>
-          </td>
+        <td class="align-middle d-flex gap-2">
+  <button class="btn btn-sm btn-outline-primary like-post-btn" data-id="${uid}">
+    👍 (${item.likes ? Object.keys(item.likes).length : 0})
+  </button>
+  <button class="btn btn-sm btn-outline-info view-comments-btn" data-id="${uid}">View Comments</button>
+</td>
+
         </tr>
       `);
     });
@@ -177,6 +181,10 @@ document.addEventListener("click", async (e) => {
     const key = e.target.getAttribute("data-id");
     await showCommentModal(key);
   }
+if (e.target.matches(".like-post-btn")) {
+  const id = e.target.getAttribute("data-id");
+  await toggleLike(`complaints/${id}`);
+}
 
   if (e.target.matches(".admin-reply-submit-btn")) {
     const key = e.target.getAttribute("data-id");
