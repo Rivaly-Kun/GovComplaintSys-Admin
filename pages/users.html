@@ -49,51 +49,46 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active bg-gradient-dark text-white" href="../pages/dashboard.html">
+          <a class="nav-link text-dark" href="../pages/dashboard.html">
             <i class="material-symbols-rounded opacity-5">dashboard</i>
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
         </li>
-           <li class="nav-item">
+             <li class="nav-item">
   <a class="nav-link text-dark" href="../pages/complaints.html">
     <i class="material-symbols-rounded opacity-5">report</i>
     <span class="nav-link-text ms-1">Complaints</span>
   </a>
 </li>
-
         <li class="nav-item">
           <a class="nav-link text-dark" href="../pages/archives.html">
             <i class="material-symbols-rounded opacity-5">receipt_long</i>
             <span class="nav-link-text ms-1">Archives</span>
           </a>
         </li>
-           <li class="nav-item">
-  <a class="nav-link text-dark" href="../pages/users.html">
-    <i class="material-symbols-rounded opacity-5">group</i>
-    <span class="nav-link-text ms-1">Users</span>
-  </a>
-</li>
-
+                <li class="nav-item">
+          <a class="nav-link active bg-gradient-dark text-white" href="../pages/users.html">
+            <i class="material-symbols-rounded opacity-5">group</i>
+            <span class="nav-link-text ms-1">Users</span>
+          </a>
+        </li>
        
-  
-      
       </ul>
     </div>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
       <div class="mx-3">
-        <a class="btn btn-outline-dark mt-4 w-100" type="button" id="LogoutBtn">Logout</a>
-       
+<a class="btn btn-outline-dark mt-4 w-100" type="button" id="LogoutBtn">Logout</a>
       </div>
     </div>
   </aside>
-  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg  ">
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Users</li>
           </ol>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
@@ -102,80 +97,117 @@
           </div>
           <ul class="navbar-nav d-flex align-items-center  justify-content-end">
 
-         
-            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                <div class="sidenav-toggler-inner">
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                </div>
-              </a>
-            </li>
+          
+
             <li class="nav-item px-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0">
                 <i class="material-symbols-rounded fixed-plugin-button-nav">settings</i>
               </a>
             </li>
-      
+
           </ul>
         </div>
       </div>
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-2">
+ 
       <div class="row">
-        <div class="ms-3">
-          <h3 class="mb-0 h4 font-weight-bolder">Dashboard</h3>
-
-        </div>
-
-      </div>
-
-      <div class="row mb-4">
-        <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+        <div class="col-md-7 mt-4">
           <div class="card">
-            <div class="card-header pb-0">
-              <div class="row">
-                <div class="col-lg-6 col-7">
-                  <h6>Complaints</h6>
-
-                </div>
-                <div class="col-lg-6 col-5 my-auto text-end">
-              
-                </div>
-              </div>
+            <div class="card-header pb-0 px-3">
+              <h6 class="mb-0">Users</h6>
             </div>
-            <div class="card-body px-0 pb-2">
-              <div class="table-responsive">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Complaint</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Time</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="dashboardTable">
+            <div class="card-body pt-4 p-3">
+              <ul class="list-group"  id="archivedtbl">
               
-              
-                  </tbody>
-                </table>
-              </div>
+
+     
+
+
+              </ul>
             </div>
           </div>
         </div>
-    
+
+        
+        <div class="col-md-5 mt-4">
+          <div class="card h-100 mb-4">
+            <div class="card-header pb-0 px-3">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6 class="mb-0">Reports</h6>
+                </div>
+        
+              </div>
+            </div>
+            <div class="card-body pt-4 p-3">
+           
+              <ul class="list-group" id="pinnedtbl">
+   
+              </ul>
+         
+            </div>
+          </div>
+        </div>
       </div>
+
+<!-- Modal -->
+<div id="reportModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background-color:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:9999; overflow-y:auto;">
+  <div style="background:#fff; padding:16px; border-radius:12px; max-width:420px; width:90%; margin:40px auto; box-shadow:0 5px 15px rgba(0,0,0,0.2);">
+
+    <!-- Modal Header -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h6 style="margin:0; font-size:16px;">View Report by <span id="reportModalUser" style="color:#007bff;"></span></h6>
+      <button data-type="modal-close" style="border:none; background:none; font-size:22px; line-height:1;">&times;</button>
+    </div>
+
+    <!-- Scrollable Content -->
+    <div style="max-height:65vh; overflow-y:auto; padding-right:4px;">
+
+      <!-- User Name -->
+      <div style="margin-bottom:12px;">
+        <label style="font-size:14px; font-weight:500;">User Name</label>
+        <div id="reportModalName" style="background:#f8f9fa; border:1px solid #ced4da; padding:8px 10px; border-radius:6px; font-size:14px;"></div>
+      </div>
+
+      <!-- Complaint Text -->
+      <div style="margin-bottom:12px;">
+        <label for="reportModalText" style="font-size:14px; font-weight:500;">Report Content</label>
+        <textarea id="reportModalText" readonly style="width:100%; padding:8px 10px; font-size:14px; border-radius:6px; border:1px solid #ced4da; resize:none;" rows="4"></textarea>
+      </div>
+
+      <!-- Image -->
+      <div style="margin-bottom:12px;">
+        <label style="font-size:14px; font-weight:500;">Attached Image</label>
+        <div>
+          <img id="reportModalImage" src="" alt="Report Image" style="width:100%; max-height:200px; object-fit:contain; border-radius:6px; border:1px solid #ccc;">
+        </div>
+      </div>
+    </div>
+
+<!-- Actions -->
+<div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
+  <button id="reportOnlyDelete" class="btn btn-outline-danger btn-sm">Delete Report Only</button>
+  <button id="reportModalDelete" class="btn btn-danger btn-sm">Delete Post</button>
+</div>
+
+
+  </div>
+</div>
+
+
+
+
+
       <footer class="footer py-4  ">
         <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">
             <div class="col-lg-6 mb-lg-0 mb-4">
-           
+
             </div>
             <div class="col-lg-6">
-    
+              
             </div>
           </div>
         </div>
@@ -183,7 +215,9 @@
     </div>
   </main>
   <div class="fixed-plugin">
-
+    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
+      <i class="material-symbols-rounded py-2">settings</i>
+    </a>
     <div class="card shadow-lg">
       <div class="card-header pb-0 pt-3">
    
@@ -236,7 +270,7 @@
           </div>
         </div>
         <hr class="horizontal dark my-sm-4">
-
+    
       </div>
     </div>
   </div>
@@ -245,9 +279,7 @@
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-  <script src="../assets/js/plugins/chartjs.min.js"></script>
-<script type="module" src="../assets/js/dash.js"></script>
-
+  <script type="module" src="../assets/js/users.js"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
