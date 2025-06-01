@@ -33,7 +33,7 @@ onValue(complaintsRef, (snapshot) => {
     Object.entries(data).forEach(([uid, item]) => {
       if (!item.addToThread) return;
 
-      const { name, complaint, timestamp, pin } = item;
+      const { name, complaint, timestamp, pin, imageUrl } = item;
       const date = new Date(Number(timestamp)).toLocaleString();
 
       dashboardTable.insertAdjacentHTML('beforeend', `
@@ -51,13 +51,19 @@ onValue(complaintsRef, (snapshot) => {
           <td class="align-middle text-center text-sm">
             <span class="text-xs font-weight-bold">${date}</span>
           </td>
-        <td class="align-middle d-flex gap-2">
-  <button class="btn btn-sm btn-outline-primary like-post-btn" data-id="${uid}">
-    👍 (${item.likes ? Object.keys(item.likes).length : 0})
-  </button>
-  <button class="btn btn-sm btn-outline-info view-comments-btn" data-id="${uid}">View Comments</button>
-</td>
-
+          <td class="align-middle d-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary like-post-btn" data-id="${uid}">
+              👍 (${item.likes ? Object.keys(item.likes).length : 0})
+            </button>
+            <button class="btn btn-sm btn-outline-info view-comments-btn" data-id="${uid}">
+              View Comments
+            </button>
+            ${imageUrl ? `
+            <button class="btn btn-sm btn-outline-warning view-image-btn" data-img="${imageUrl}">
+              View Image
+            </button>
+            ` : ''}
+          </td>
         </tr>
       `);
     });
@@ -184,6 +190,13 @@ document.addEventListener("click", async (e) => {
 if (e.target.matches(".like-post-btn")) {
   const id = e.target.getAttribute("data-id");
   await toggleLike(`complaints/${id}`);
+}
+if (e.target.matches(".view-image-btn")) {
+  const imgUrl = e.target.getAttribute("data-img");
+  const imgElement = document.getElementById("complaintImage");
+  imgElement.src = imgUrl;
+  const imageModal = new bootstrap.Modal(document.getElementById("imageModal"));
+  imageModal.show();
 }
 
   if (e.target.matches(".admin-reply-submit-btn")) {

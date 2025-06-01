@@ -21,103 +21,140 @@
   const dashboardTable = document.getElementById('dashboardTable');
 
   // Realtime listener
-  const complaintsRef = ref(db, 'complaints');
-  onValue(complaintsRef, (snapshot) => {
-    dashboardTable.innerHTML = ""; // Clear table before re-rendering
+const complaintsRef = ref(db, 'complaints');
+onValue(complaintsRef, (snapshot) => {
+  dashboardTable.innerHTML = ""; // Clear table before re-rendering
 
-    if (snapshot.exists()) {
-      const data = snapshot.val();
+  if (snapshot.exists()) {
+    const data = snapshot.val();
 
-      Object.keys(data).forEach(uid => {
-        const item = data[uid];
-        const { name, complaint, timestamp, pin } = item;
-        const date = new Date(Number(timestamp));
-        const formattedDate = date.toLocaleString();
+    Object.keys(data).forEach(uid => {
+      const item = data[uid];
+      const { name, complaint, timestamp, pin, imageUrl } = item;
+      const date = new Date(Number(timestamp));
+      const formattedDate = date.toLocaleString();
 
-        const rowHTML = `
-          <tr class="${pin ? 'border border-danger border-2 rounded' : ''}">
-            <td>
-              <div class="d-flex px-2 py-1">
-                <div>
-                  <img src="../assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm me-3" alt="xd">
-                </div>
-                <div class="d-flex flex-column justify-content-center">
-                  <h6 class="mb-0 text-sm">${name}</h6>
-                  <p class="text-xs text-secondary mb-0">Complaint ID: ${uid}</p>
-                </div>
+      const rowHTML = `
+        <tr class="${pin ? 'border border-danger border-2 rounded' : ''}">
+          <td>
+            <div class="d-flex px-2 py-1">
+              <div>
+                <img src="../assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm me-3" alt="xd">
               </div>
-            </td>
-            <td class="text-sm">${complaint}</td>
-            <td class="align-middle text-center text-sm">
-              <span class="text-xs font-weight-bold">${formattedDate}</span>
-            </td>
-            <td class="align-middle">
-              <div class="d-flex justify-content-around">
-                <button class="btn btn-sm btn-outline-secondary archive-btn" data-id="${uid}">Archive</button>
-                <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${uid}">Delete</button>
-                <button class="btn btn-sm ${pin ? 'btn-outline-warning' : 'btn-outline-primary'} pin-btn" data-id="${uid}">
-                  ${pin ? 'Unpin' : 'Pin'}
-                </button>
+              <div class="d-flex flex-column justify-content-center">
+                <h6 class="mb-0 text-sm">${name}</h6>
+                <p class="text-xs text-secondary mb-0">Complaint ID: ${uid}</p>
               </div>
-            </td>
-          </tr>
-        `;
+            </div>
+          </td>
+          <td class="text-sm">${complaint}</td>
+          <td class="align-middle text-center text-sm">
+            <span class="text-xs font-weight-bold">${formattedDate}</span>
+          </td>
+          <td class="align-middle">
+            <div class="d-flex flex-wrap justify-content-around gap-1">
+              <button class="btn btn-sm btn-outline-secondary archive-btn" data-id="${uid}">Archive</button>
+              <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${uid}">Delete</button>
+              <button class="btn btn-sm ${pin ? 'btn-outline-warning' : 'btn-outline-primary'} pin-btn" data-id="${uid}">
+                ${pin ? 'Unpin' : 'Pin'}
+              </button>
+              ${imageUrl ? `
+              <button class="btn btn-sm btn-outline-warning view-image-btn" data-img="${imageUrl}">
+                View Image
+              </button>` : ''}
+            </div>
+          </td>
+        </tr>
+      `;
 
-        dashboardTable.insertAdjacentHTML('beforeend', rowHTML);
-      });
-    } else {
-      dashboardTable.innerHTML = `<tr><td colspan="4" class="text-center">No complaints found.</td></tr>`;
+      dashboardTable.insertAdjacentHTML('beforeend', rowHTML);
+    });
+  } else {
+    dashboardTable.innerHTML = `<tr><td colspan="4" class="text-center">No complaints found.</td></tr>`;
+  }
+}, {
+  onlyOnce: false
+});
+
+
+document.addEventListener("click", async (e) => {
+  // Handle View Image button
+  if (e.target.matches(".view-image-btn")) {
+    const imgUrl = e.target.getAttribute("data-img");
+    const imgElement = document.getElementById("complaintImage");
+    imgElement.src = imgUrl;
+
+    console.log("View Image button clicked");
+
+    const modalElement = document.getElementById("imageModal");
+    if (!modalElement) {
+      console.error("Modal element not found!");
+      return;
     }
-  }, {
-    onlyOnce: false
-  });
 
-  // Event delegation for actions
-  document.addEventListener("click", async (e) => {
-    const key = e.target.getAttribute("data-id");
-    if (!key) return;
+    if (typeof bootstrap === 'undefined' || !bootstrap.Modal) {
+      console.error("Bootstrap modal is not available. Make sure bootstrap.bundle.js is loaded.");
+      return;
+    }
 
-    const complaintRef = ref(db, `complaints/${key}`);
-    const archiveRef = ref(db, `archive/${key}`);
-    const pinRef = ref(db, `pin/${key}`);
+    const imageModal = new bootstrap.Modal(modalElement);
+    imageModal.show();
+    return; // Prevent further action
+  }
 
-    if (e.target.classList.contains("archive-btn")) {
-      try {
-        const snapshot = await get(complaintRef);
-        if (snapshot.exists()) {
-          await set(archiveRef, snapshot.val());
-          await remove(complaintRef);
-          alert("Complaint archived successfully.");
-        }
-      } catch (err) {
-        console.error("Archive failed:", err);
-      }
-    } else if (e.target.classList.contains("delete-btn")) {
-      try {
+  // For other actions, check if data-id exists
+  const key = e.target.getAttribute("data-id");
+  if (!key) return;
+
+  const complaintRef = ref(db, `complaints/${key}`);
+  const archiveRef = ref(db, `archive/${key}`);
+  const pinRef = ref(db, `pin/${key}`);
+
+  // Handle Archive
+  if (e.target.classList.contains("archive-btn")) {
+    try {
+      const snapshot = await get(complaintRef);
+      if (snapshot.exists()) {
+        await set(archiveRef, snapshot.val());
         await remove(complaintRef);
-        alert("Complaint deleted.");
-      } catch (err) {
-        console.error("Delete failed:", err);
+        alert("Complaint archived successfully.");
       }
-    } else if (e.target.classList.contains("pin-btn")) {
-      try {
-        const snapshot = await get(complaintRef);
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          const isPinned = data.pin === true;
-
-          data.pin = !isPinned; // Toggle pin
-
-          await set(complaintRef, data); // Update complaint
-          await set(pinRef, data);       // Also reflect in /pin
-
-          alert(isPinned ? "Complaint unpinned." : "Complaint pinned.");
-        }
-      } catch (err) {
-        console.error("Pin/Unpin failed:", err);
-      }
+    } catch (err) {
+      console.error("Archive failed:", err);
     }
-  });
+  }
+
+  // Handle Delete
+  else if (e.target.classList.contains("delete-btn")) {
+    try {
+      await remove(complaintRef);
+      alert("Complaint deleted.");
+    } catch (err) {
+      console.error("Delete failed:", err);
+    }
+  }
+
+  // Handle Pin/Unpin
+  else if (e.target.classList.contains("pin-btn")) {
+    try {
+      const snapshot = await get(complaintRef);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const isPinned = data.pin === true;
+
+        data.pin = !isPinned;
+
+        await set(complaintRef, data);
+        await set(pinRef, data);
+
+        alert(isPinned ? "Complaint unpinned." : "Complaint pinned.");
+      }
+    } catch (err) {
+      console.error("Pin/Unpin failed:", err);
+    }
+  }
+});
+
 
     document.getElementById("LogoutBtn").addEventListener("click", function () {
 
